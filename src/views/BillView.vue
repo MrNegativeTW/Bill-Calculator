@@ -75,6 +75,16 @@
         </v-col>
       </v-row>
 
+      <v-data-table
+        class="rounded-lg"
+        :headers="paymentResultTableHeaders"
+        :items="results"
+        item-value="name"
+        density="comfortable"
+        fixed-header
+        hide-default-footer
+      ></v-data-table>
+
       <div class="summary" id="summary-container">
         <h3>Summary</h3>
         <table id="summary-table">
@@ -100,41 +110,6 @@
       </div>
 
     </v-card>
-
-    <!-- results-container -->
-    <!-- <div class="results" id="results-container" v-if="showResults">
-      <div id="results">
-        <PaymentResultCard
-          v-for="result in results"
-          :key="'result-' + result.id"
-          :result="result"
-        />
-      </div>
-
-      <div class="summary" id="summary-container">
-        <h3>Summary</h3>
-        <table id="summary-table">
-          <thead>
-            <tr>
-              <th>Person</th>
-              <th>Electric</th>
-              <th>Water</th>
-              <th>Gas</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody id="summary-body">
-            <tr v-for="result in results" :key="'summary-' + result.id">
-              <td>Person {{ result.id }}</td>
-              <td>${{ result.electric.payment.toFixed(2) }}</td>
-              <td>${{ result.water.payment.toFixed(2) }}</td>
-              <td>${{ result.gas.payment.toFixed(2) }}</td>
-              <td>${{ result.totalPayment.toFixed(2) }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div> -->
   </v-container>
 </template>
 
@@ -176,6 +151,14 @@ const people = reactive<Person[]>([
     days: 0,
   },
 ])
+
+const paymentResultTableHeaders = [
+    { title: 'Person', align: 'center', key: 'id' },
+    { title: 'Electric', align: 'end', key: 'electric.payment' },
+    { title: 'Water', align: 'end', key: 'water.payment' },
+    { title: 'Gas', align: 'end', key: 'gas.payment' },
+    { title: 'Total', align: 'end', key: 'totalPayment' },
+  ]
 
 const results = reactive<CalculationResult[]>([])
 const showResults = reactive<{ value: boolean }>({ value: false })
@@ -369,44 +352,4 @@ onMounted(() => {
 </script>
 
 <style scoped>
-
-.summary {
-  margin-top: 30px;
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-#summary-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 15px;
-}
-
-#summary-table th,
-#summary-table td {
-  padding: 12px;
-  text-align: right;
-  border-bottom: 1px solid #eee;
-}
-
-#summary-table th:first-child,
-#summary-table td:first-child {
-  text-align: left;
-}
-
-#summary-table th {
-  font-weight: 600;
-  color: #34495e;
-  background-color: #f8f9fa;
-}
-
-#summary-table tr:hover {
-  background-color: #f9f9f9;
-}
-
-#summary-table td:last-child {
-  font-weight: bold;
-}
 </style>
