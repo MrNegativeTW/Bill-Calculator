@@ -1,6 +1,9 @@
 <template>
   <v-card class="rounded-lg" :class="className">
-    <v-card-title class="font-weight-bold my-2" :class="getHeaderColor">{{ title }}</v-card-title>
+    <v-card-title class="font-weight-bold my-2" :class="getHeaderColor">
+      <v-icon :icon="getIcon" class="mr-2"></v-icon>
+      {{ title }}
+    </v-card-title>
 
     <v-card-text>
       <v-form>
@@ -94,9 +97,13 @@
               ></v-date-picker>
             </v-menu>
           </v-col>
+
+          <v-col cols="12">
+            <div class="text-center mb-1">{{ localBill.days }} days</div>
+          </v-col>
         </v-row>
 
-        <div class="text-caption">Period: {{ localBill.days }} days</div>
+        
       </v-form>
     </v-card-text>
   </v-card>
@@ -131,13 +138,26 @@ export default defineComponent({
     const getHeaderColor = computed(() => {
       switch (props.className) {
         case 'electric':
-          return 'text-blue'
+          return 'text-black'
         case 'water':
-          return 'text-green'
+          return 'text-black'
         case 'gas':
-          return 'text-red'
+          return 'text-black'
         default:
           return ''
+      }
+    })
+
+    const getIcon = computed(() => {
+      switch(props.className) {
+        case 'electric':
+          return 'mdi-lightning-bolt'
+        case 'water':
+          return 'mdi-water'
+        case 'gas':
+          return 'mdi-fire'
+        default:
+          return 'mdi-file'
       }
     })
 
@@ -229,6 +249,7 @@ export default defineComponent({
       setDefaultStartDate,
       setDefaultEndDate,
       getHeaderColor,
+      getIcon,
       startDateMenu,
       endDateMenu,
       formattedStartDate,

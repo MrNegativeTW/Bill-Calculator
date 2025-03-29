@@ -75,14 +75,14 @@ defineProps<{
 }
 
 .electric-border {
-  border-left: 4px solid #1976d2; /* Vuetify blue */
+  /* border-left: 4px solid #1976d2;*/ /* Vuetify blue */
 }
 
 .water-border {
-  border-left: 4px solid #4caf50; /* Vuetify green */
+  /* border-left: 4px solid #4caf50;*/ /* Vuetify green */
 }
 
 .gas-border {
-  border-left: 4px solid #f44336; /* Vuetify red */
+  /* border-left: 4px solid #f44336;*/ /* Vuetify red */
 }
 </style>
