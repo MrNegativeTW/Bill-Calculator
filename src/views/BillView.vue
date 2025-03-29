@@ -265,7 +265,7 @@ const calculatePayment = (): void => {
 
   const calculatedResults = calculatePayments()
   results.splice(0, results.length, ...calculatedResults)
-  showResults.valueOf = true
+  showResults.value = true
 }
 
 const calculatePayments = (): CalculationResult[] => {
