@@ -1,6 +1,9 @@
 <template>
   <v-card class="rounded-lg" :class="className">
-    <v-card-title class="font-weight-bold my-2" :class="getHeaderColor">{{ title }}</v-card-title>
+    <v-card-title class="font-weight-bold my-2" :class="getHeaderColor">
+      <v-icon :icon="getIcon" class="mr-2"></v-icon>
+      {{ title }}
+    </v-card-title>
 
     <v-card-text>
       <v-form>
@@ -50,8 +53,6 @@
                 color="primary"
                 @update:model-value="startDateSelected"
                 show-adjacent-months
-                prev-icon="mdi-chevron-left"
-                next-icon="mdi-chevron-right"
               ></v-date-picker>
             </v-menu>
           </v-col>
@@ -89,22 +90,28 @@
                 color="primary"
                 @update:model-value="endDateSelected"
                 show-adjacent-months
-                prev-icon="mdi-chevron-left"
-                next-icon="mdi-chevron-right"
               ></v-date-picker>
             </v-menu>
           </v-col>
-        </v-row>
 
-        <div class="text-caption">Period: {{ localBill.days }} days</div>
+          <v-col cols="12">
+            <div class="text-center mb-1">{{ localBill.days }} days</div>
+          </v-col>
+        </v-row>
       </v-form>
     </v-card-text>
   </v-card>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, reactive, watch, onMounted, computed, ref } from 'vue'
-import { Bill } from '../types.ts'
+import { defineComponent, reactive, watch, onMounted, computed, ref } from 'vue'
+import type { PropType } from 'vue'
+import type { Bill } from '../types.ts'
+import {
+  getFirstDayOfCurrentMonth,
+  getLastDayOfCurrentMonth,
+  getFormattedDateDisplay,
+} from '../utils/dateUtils'
 
 export default defineComponent({
   name: 'BillCard',
@@ -130,38 +137,36 @@ export default defineComponent({
     const getHeaderColor = computed(() => {
       switch (props.className) {
         case 'electric':
-          return 'text-blue'
+          return 'text-black'
         case 'water':
-          return 'text-green'
+          return 'text-black'
         case 'gas':
-          return 'text-red'
+          return 'text-black'
         default:
           return ''
       }
     })
 
+    const getIcon = computed(() => {
+      switch (props.className) {
+        case 'electric':
+          return 'mdi-lightning-bolt'
+        case 'water':
+          return 'mdi-water'
+        case 'gas':
+          return 'mdi-fire'
+        default:
+          return 'mdi-file'
+      }
+    })
+
     const formattedStartDate = computed(() => {
-      return formatDateDisplay(localBill.startDate)
+      return getFormattedDateDisplay(localBill.startDate)
     })
 
     const formattedEndDate = computed(() => {
-      return formatDateDisplay(localBill.endDate)
+      return getFormattedDateDisplay(localBill.endDate)
     })
-
-    function formatDateDisplay(dateStr: string | undefined): string {
-      if (!dateStr) return ''
-
-      try {
-        const date = new Date(dateStr)
-        return new Intl.DateTimeFormat('en-US', {
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric',
-        }).format(date)
-      } catch (e) {
-        return dateStr
-      }
-    }
 
     function startDateSelected(date: string): void {
       localBill.startDate = date
@@ -185,19 +190,6 @@ export default defineComponent({
 
     const updateBill = (): void => {
       emit('update:bill', { ...localBill })
-    }
-
-    // Get the first day of the current month in YYYY-MM-DD format
-    const getFirstDayOfCurrentMonth = (): string => {
-      const now = new Date()
-      // Using year 2025 and month 3 (March) per the provided current date
-      return `2025-03-01`
-    }
-
-    // Get the last day of the current month in YYYY-MM-DD format
-    const getLastDayOfCurrentMonth = (): string => {
-      // Last day of March is the 31st
-      return `2025-03-31`
     }
 
     // Set the start date to the first day of the current month
@@ -228,6 +220,7 @@ export default defineComponent({
       setDefaultStartDate,
       setDefaultEndDate,
       getHeaderColor,
+      getIcon,
       startDateMenu,
       endDateMenu,
       formattedStartDate,
@@ -239,5 +232,4 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

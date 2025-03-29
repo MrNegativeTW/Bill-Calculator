@@ -1,5 +1,26 @@
 <template>
-  <v-container>
+  <!-- Header Section -->
+  <v-card class="mb-6" color="#f5f7fa" flat width="100%">
+    <v-container max-width="900px">
+      <div class="py-8">
+        <div class="text-h3 font-weight-bold mb-2">Bill Calculator</div>
+        <div class="text-subtitle-1 mb-4">
+          A simple tool to calculate shared bills between roommates based on their stay duration.
+        </div>
+        <v-btn
+          color="primary"
+          href="https://github.com/MrNegativeTW/Bill-Calculator"
+          target="_blank"
+          prepend-icon="mdi-github"
+          variant="outlined"
+        >
+          GitHub
+        </v-btn>
+      </div>
+    </v-container>
+  </v-card>
+
+  <v-container class="mb-4" max-width="900px">
     <div class="text-h4 my-6 font-weight-bold">Bills</div>
 
     <v-card class="mb-6 pa-4 rounded-lg" color="#f5f7fa" flat>
@@ -35,7 +56,7 @@
       </v-row>
     </v-card>
 
-    <div class="text-h4 my-6 font-weight-bold">Roommates</div>
+    <div class="text-h4 mt-12 mb-6 font-weight-bold">Roommates</div>
 
     <v-card class="mb-6 pa-4 rounded-lg" color="#f5f7fa" flat>
       <div id="people-container">
@@ -66,13 +87,13 @@
 
     <v-btn color="primary" size="large" @click="calculatePayment" block>Calculate Payment</v-btn>
 
-    <div class="text-h4 my-4 font-weight-bold">Payment Results</div>
+    <div class="text-h4 mt-12 mb-6 font-weight-bold">Payment Results</div>
 
     <v-card class="mb-6 pa-4 rounded-lg" color="#f5f7fa" flat>
       <div class="text-h6 font-weight-bold">Overview</div>
 
       <v-data-table
-        class="rounded-lg mt-4"
+        class="rounded-lg mt-4 elevation-1"
         :headers="paymentResultTableHeaders"
         :items="results"
         item-value="name"
@@ -89,15 +110,20 @@
         </v-col>
       </v-row>
     </v-card>
+
+    <div class="mt-12 text-center text-caption" @click="openPrivacy">Privacy</div>
   </v-container>
 </template>
 
 <script setup lang="ts">
-import { reactive, onMounted } from 'vue'
+import { reactive, onMounted, inject } from 'vue'
 import BillCard from '../components/BillCard.vue'
 import PersonCard from '../components/PersonCard.vue'
 import PaymentResultCard from '../components/PaymentResultCard.vue'
-import type { Bill, Person, CalculationResult, BillType } from '../types'
+import { SnackbarKey } from '@/composables/useSnackbar'
+import type { BillType, Bill, Person, CalculationResult } from '../types'
+
+const showSnackbar = inject(SnackbarKey)
 
 // Define initial bill state with proper types
 const bills = reactive<Record<BillType, Bill>>({
@@ -132,29 +158,29 @@ const people = reactive<Person[]>([
 ])
 
 const paymentResultTableHeaders = [
-  { title: 'Person', align: 'center', key: 'id' },
+  { title: 'Person', align: 'center' as const, value: 'id' },
   {
     title: 'Electric',
-    align: 'end',
-    key: 'electric.payment',
+    align: 'end' as const,
+    value: 'electric.payment',
     format: (value: number) => `$${value.toFixed(2)}`,
   },
   {
     title: 'Water',
-    align: 'end',
-    key: 'water.payment',
+    align: 'end' as const,
+    value: 'water.payment',
     format: (value: number) => `$${value.toFixed(2)}`,
   },
   {
     title: 'Gas',
-    align: 'end',
-    key: 'gas.payment',
+    align: 'end' as const,
+    value: 'gas.payment',
     format: (value: number) => `$${value.toFixed(2)}`,
   },
   {
     title: 'Total',
-    align: 'end',
-    key: 'totalPayment',
+    align: 'end' as const,
+    value: 'totalPayment',
     format: (value: number) => `$${value.toFixed(2)}`,
   },
 ]
@@ -226,7 +252,7 @@ const calculateDays = () => {
 
 const calculatePayment = (): void => {
   if (bills.electric.amount === 0 && bills.water.amount === 0 && bills.gas.amount === 0) {
-    alert('Please enter at least one bill amount')
+    showSnackbar?.('Please enter at least one bill amount')
     return
   }
 
@@ -237,12 +263,12 @@ const calculatePayment = (): void => {
     const endDate = new Date(bill.endDate)
 
     if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
-      alert(`Please enter valid dates for the ${billType} bill`)
+      showSnackbar?.('Please enter valid dates for the ${billType} bill')
       return
     }
 
     if (startDate > endDate) {
-      alert(`Start date cannot be after end date for the ${billType} bill`)
+      showSnackbar?.('Start date cannot be after end date for the ${billType} bill')
       return
     }
   }
@@ -253,19 +279,19 @@ const calculatePayment = (): void => {
     const endDate = new Date(person.endDate)
 
     if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
-      alert(`Please enter valid dates for Person ${person.id}`)
+      showSnackbar?.('Please enter valid dates for Person ${person.id}')
       return
     }
 
     if (startDate > endDate) {
-      alert(`Start date cannot be after end date for Person ${person.id}`)
+      showSnackbar?.('Start date cannot be after end date for Person ${person.id}')
       return
     }
   }
 
   const calculatedResults = calculatePayments()
   results.splice(0, results.length, ...calculatedResults)
-  showResults.valueOf = true
+  showResults.value = true
 }
 
 const calculatePayments = (): CalculationResult[] => {
@@ -343,6 +369,10 @@ const calculatePayments = (): CalculationResult[] => {
   }
 
   return calculatedResults
+}
+
+const openPrivacy = () => {
+  showSnackbar?.("We don't do that here.")
 }
 
 onMounted(() => {

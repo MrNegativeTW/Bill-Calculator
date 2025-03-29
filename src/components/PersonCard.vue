@@ -25,20 +25,26 @@
                 density="comfortable"
                 variant="outlined"
               >
-                    <template v-slot:append-inner>
-                        <v-btn
-                        icon
-                        variant="text"
-                        title="Set to start of current month"
-                        >
-                        <v-icon>mdi-calendar-start</v-icon>
-                        </v-btn>
-                    </template>
-                </v-text-field>
+                <template v-slot:append-inner>
+                  <v-btn
+                    icon
+                    variant="text"
+                    title="Set to start of current month"
+                    @click.stop="setDefaultStartDate"
+                  >
+                    <v-icon>mdi-calendar-start</v-icon>
+                  </v-btn>
+                </template>
+              </v-text-field>
             </template>
             <v-date-picker
               v-model="localPerson.startDate"
-              @update:model-value="startDateMenu = false; updatePerson()"
+              color="primary"
+              @update:model-value="
+                startDateMenu = false;
+                updatePerson()
+              "
+              show-adjacent-months
             ></v-date-picker>
           </v-menu>
         </v-col>
@@ -63,25 +69,31 @@
                 variant="outlined"
               >
                 <template v-slot:append-inner>
-                    <v-btn
+                  <v-btn
                     icon
                     variant="text"
                     title="Set to start of current month"
-                    >
+                    @click.stop="setDefaultEndDate"
+                  >
                     <v-icon>mdi-calendar-end</v-icon>
-                    </v-btn>
+                  </v-btn>
                 </template>
-            </v-text-field>
+              </v-text-field>
             </template>
             <v-date-picker
               v-model="localPerson.endDate"
-              @update:model-value="endDateMenu = false; updatePerson()"
+              color="primary"
+              @update:model-value="
+                endDateMenu = false;
+                updatePerson()
+              "
+              show-adjacent-months
             ></v-date-picker>
           </v-menu>
         </v-col>
-        
+
         <v-col cols="12" sm="12" md="3" lg="3">
-          <div class="text-body-1 text-center">Occupancy: {{ localPerson.days }} days</div>
+          <div class="text-body-1 text-center">{{ localPerson.days }} days</div>
         </v-col>
       </v-row>
     </v-card-text>
@@ -89,8 +101,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, reactive, ref, computed, watch } from 'vue'
-import { Person } from '../types.ts'
+import { defineComponent, reactive, ref, computed, watch } from 'vue'
+import type { PropType } from 'vue'
+import type { Person } from '../types.ts'
+import {
+  getFirstDayOfCurrentMonth,
+  getLastDayOfCurrentMonth,
+  getFormattedDateDisplay,
+} from '../utils/dateUtils'
 
 export default defineComponent({
   name: 'PersonCard',
@@ -108,14 +126,26 @@ export default defineComponent({
     const localPerson = reactive<Person>({ ...props.person })
     const startDateMenu = ref(false)
     const endDateMenu = ref(false)
-    
+
     const formattedStartDate = computed(() => {
-      return localPerson.startDate ? new Date(localPerson.startDate).toLocaleDateString() : '';
-    });
-    
+      return getFormattedDateDisplay(localPerson.startDate)
+    })
+
     const formattedEndDate = computed(() => {
-      return localPerson.endDate ? new Date(localPerson.endDate).toLocaleDateString() : '';
-    });
+      return getFormattedDateDisplay(localPerson.endDate)
+    })
+
+    // Set the start date to the first day of the current month
+    const setDefaultStartDate = (): void => {
+      localPerson.startDate = getFirstDayOfCurrentMonth()
+      updatePerson()
+    }
+
+    // Set the end date to the last day of the current month
+    const setDefaultEndDate = (): void => {
+      localPerson.endDate = getLastDayOfCurrentMonth()
+      updatePerson()
+    }
 
     watch(
       () => props.person,
@@ -135,11 +165,12 @@ export default defineComponent({
       startDateMenu,
       endDateMenu,
       formattedStartDate,
-      formattedEndDate
+      formattedEndDate,
+      setDefaultStartDate,
+      setDefaultEndDate,
     }
   },
 })
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
