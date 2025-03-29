@@ -8,6 +8,10 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: BillView,
+      meta: {
+        title: 'Bill Calculator - Home',
+        description: 'Calculate and split your bills easily'
+      }
     },
     {
       path: '/home2',
@@ -26,6 +30,12 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue'),
     },
   ],
+})
+
+// Update document title on route change
+router.beforeEach((to, from, next) => {
+  document.title = to.meta.title as string || 'Bill Calculator'
+  next()
 })
 
 export default router
