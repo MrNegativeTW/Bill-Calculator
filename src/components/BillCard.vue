@@ -53,8 +53,6 @@
                 color="primary"
                 @update:model-value="startDateSelected"
                 show-adjacent-months
-                prev-icon="mdi-chevron-left"
-                next-icon="mdi-chevron-right"
               ></v-date-picker>
             </v-menu>
           </v-col>
@@ -92,8 +90,6 @@
                 color="primary"
                 @update:model-value="endDateSelected"
                 show-adjacent-months
-                prev-icon="mdi-chevron-left"
-                next-icon="mdi-chevron-right"
               ></v-date-picker>
             </v-menu>
           </v-col>
@@ -113,6 +109,7 @@
 import { defineComponent, reactive, watch, onMounted, computed, ref } from 'vue'
 import type { PropType } from 'vue'
 import type { Bill } from '../types.ts'
+import { getFirstDayOfCurrentMonth, getLastDayOfCurrentMonth } from '../utils/dateUtils'
 
 export default defineComponent({
   name: 'BillCard',
@@ -206,19 +203,6 @@ export default defineComponent({
 
     const updateBill = (): void => {
       emit('update:bill', { ...localBill })
-    }
-
-    // Get the first day of the current month in YYYY-MM-DD format
-    const getFirstDayOfCurrentMonth = (): string => {
-      const now = new Date()
-      // Using year 2025 and month 3 (March) per the provided current date
-      return `2025-03-01`
-    }
-
-    // Get the last day of the current month in YYYY-MM-DD format
-    const getLastDayOfCurrentMonth = (): string => {
-      // Last day of March is the 31st
-      return `2025-03-31`
     }
 
     // Set the start date to the first day of the current month
