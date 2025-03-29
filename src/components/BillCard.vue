@@ -1,214 +1,250 @@
 <template>
-    <div class="bill-card" :class="className">
-      <h3>{{ title }}</h3>
-      <div class="bill-amount">
-        <label :for="`${className}-bill`">Amount ($):</label>
-        <input 
-          type="number" 
-          :id="`${className}-bill`" 
-          min="0" 
-          step="0.01" 
-          placeholder="0.00"
-          v-model.number="localBill.amount" 
+  <v-card :class="className" class="bill-card">
+    <v-card-title class="font-weight-bold my-2" :class="getHeaderColor">{{ title }}</v-card-title>
+
+    <v-card-text>
+      <v-form>
+        <v-text-field
+          v-model.number="localBill.amount"
+          :label="'Amount ($)'"
+          type="number"
+          min="0"
+          step="0.01"
+          prefix="$"
+          density="comfortable"
           @input="updateBill"
-        >
-      </div>
-      <div class="bill-dates">
-        <div class="date-input">
-          <label :for="`${className}-start-date`">Billing Start:</label>
-          <input 
-            type="date" 
-            :id="`${className}-start-date`" 
-            v-model="localBill.startDate"
-            @change="updateBill"
-          >
-          <button class="date-preset" @click="setDefaultStartDate" title="Set to first day of current month">
-            This Month
-          </button>
-        </div>
-        <div class="date-input">
-          <label :for="`${className}-end-date`">Billing End:</label>
-          <input 
-            type="date" 
-            :id="`${className}-end-date`" 
-            v-model="localBill.endDate"
-            @change="updateBill"
-          >
-          <button class="date-preset" @click="setDefaultEndDate" title="Set to last day of current month">
-            This Month
-          </button>
-        </div>
-      </div>
-      <div class="bill-days">Period: {{ localBill.days }} days</div>
-    </div>
-  </template>
-  
-  <script lang="ts">
-  import { defineComponent, PropType, reactive, watch, onMounted } from 'vue';
-  import { Bill } from '../types';
-  
-  export default defineComponent({
-    name: 'BillCard',
-    props: {
-      title: {
-        type: String,
-        required: true
-      },
-      bill: {
-        type: Object as PropType<Bill>,
-        required: true
-      },
-      className: {
-        type: String,
-        default: ''
-      }
+          variant="outlined"
+        ></v-text-field>
+
+        <v-row dense>
+          <v-col cols="12">
+            <v-menu
+              v-model="startDateMenu"
+              :close-on-content-click="false"
+              transition="scale-transition"
+              min-width="auto"
+            >
+              <template v-slot:activator="{ props }">
+                <v-text-field
+                  v-model="formattedStartDate"
+                  :label="'Billing Start'"
+                  readonly
+                  density="comfortable"
+                  v-bind="props"
+                  variant="outlined"
+                >
+                  <template v-slot:append>
+                    <v-btn
+                      icon
+                      variant="text"
+                      @click.stop="setDefaultStartDate"
+                      title="Set to start of current month"
+                    >
+                      <v-icon>mdi-calendar-start</v-icon>
+                    </v-btn>
+                  </template>
+                </v-text-field>
+              </template>
+              <v-date-picker
+                v-model="localBill.startDate"
+                color="primary"
+                @update:model-value="startDateSelected"
+                show-adjacent-months
+                prev-icon="mdi-chevron-left"
+                next-icon="mdi-chevron-right"
+              ></v-date-picker>
+            </v-menu>
+          </v-col>
+
+          <v-col cols="12">
+            <v-menu
+              v-model="endDateMenu"
+              :close-on-content-click="false"
+              transition="scale-transition"
+              min-width="auto"
+            >
+              <template v-slot:activator="{ props }">
+                <v-text-field
+                  v-model="formattedEndDate"
+                  :label="'Billing End'"
+                  readonly
+                  density="comfortable"
+                  v-bind="props"
+                  variant="outlined"
+                >
+                  <template v-slot:append>
+                    <v-btn
+                      icon
+                      variant="text"
+                      @click.stop="setDefaultEndDate"
+                      title="Set to end of current month"
+                    >
+                      <v-icon>mdi-calendar-end</v-icon>
+                    </v-btn>
+                  </template>
+                </v-text-field>
+              </template>
+              <v-date-picker
+                v-model="localBill.endDate"
+                color="primary"
+                @update:model-value="endDateSelected"
+                show-adjacent-months
+                prev-icon="mdi-chevron-left"
+                next-icon="mdi-chevron-right"
+              ></v-date-picker>
+            </v-menu>
+          </v-col>
+        </v-row>
+
+        <div class="text-caption">Period: {{ localBill.days }} days</div>
+      </v-form>
+    </v-card-text>
+  </v-card>
+</template>
+
+<script lang="ts">
+import { defineComponent, PropType, reactive, watch, onMounted, computed, ref } from 'vue'
+import { Bill } from '../types.ts'
+
+export default defineComponent({
+  name: 'BillCard',
+  props: {
+    title: {
+      type: String,
+      required: true,
     },
-    setup(props, { emit }) {
-      const localBill = reactive<Bill>({ ...props.bill });
-  
-      watch(() => props.bill, (newValue) => {
-        Object.assign(localBill, newValue);
-      }, { deep: true });
-  
-      const updateBill = (): void => {
-        emit('update:bill', { ...localBill });
-      };
-  
-      // Get the first day of the current month in YYYY-MM-DD format
-      const getFirstDayOfCurrentMonth = (): string => {
-        const now = new Date();
-        // Using year 2025 and month 3 (March) per the provided current date
-        return `2025-03-01`;
-      };
-  
-      // Get the last day of the current month in YYYY-MM-DD format
-      const getLastDayOfCurrentMonth = (): string => {
-        // Last day of March is the 31st
-        return `2025-03-31`;
-      };
-  
-      // Set the start date to the first day of the current month
-      const setDefaultStartDate = (): void => {
-        localBill.startDate = getFirstDayOfCurrentMonth();
-        updateBill();
-      };
-  
-      // Set the end date to the last day of the current month
-      const setDefaultEndDate = (): void => {
-        localBill.endDate = getLastDayOfCurrentMonth();
-        updateBill();
-      };
-  
-      onMounted(() => {
-        // If no dates are set (initial load), set to current month
-        if (!localBill.startDate) {
-          setDefaultStartDate();
-        }
-        if (!localBill.endDate) {
-          setDefaultEndDate();
-        }
-      });
-  
-      return {
-        localBill,
-        updateBill,
-        setDefaultStartDate,
-        setDefaultEndDate
-      };
+    bill: {
+      type: Object as PropType<Bill>,
+      required: true,
+    },
+    className: {
+      type: String,
+      default: '',
+    },
+  },
+  setup(props, { emit }) {
+    const localBill = reactive<Bill>({ ...props.bill })
+    const startDateMenu = ref(false)
+    const endDateMenu = ref(false)
+
+    const getHeaderColor = computed(() => {
+      switch (props.className) {
+        case 'electric':
+          return 'text-blue'
+        case 'water':
+          return 'text-green'
+        case 'gas':
+          return 'text-red'
+        default:
+          return ''
+      }
+    })
+
+    const formattedStartDate = computed(() => {
+      return formatDateDisplay(localBill.startDate)
+    })
+
+    const formattedEndDate = computed(() => {
+      return formatDateDisplay(localBill.endDate)
+    })
+
+    function formatDateDisplay(dateStr: string | undefined): string {
+      if (!dateStr) return ''
+
+      try {
+        const date = new Date(dateStr)
+        return new Intl.DateTimeFormat('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        }).format(date)
+      } catch (e) {
+        return dateStr
+      }
     }
-  });
-  </script>
-  
-  <style scoped>
-  .bill-card {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  
-  .bill-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-  
-  .bill-card h3 {
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .bill-card.electric h3 {
-    color: #3498db;
-  }
-  
-  .bill-card.water h3 {
-    color: #2ecc71;
-  }
-  
-  .bill-card.gas h3 {
-    color: #e74c3c;
-  }
-  
-  .bill-amount {
-    margin-bottom: 15px;
-  }
-  
-  .bill-dates {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 10px;
-  }
-  
-  .bill-days {
-    font-size: 14px;
-    color: #7f8c8d;
-    margin-top: 5px;
-    text-align: right;
-  }
-  
-  .date-input {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
-  
-  label {
-    font-weight: 500;
-    margin-bottom: 5px;
-    color: #34495e;
-    font-size: 14px;
-  }
-  
-  input {
-    padding: 10px 12px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 15px;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  
-  input:focus {
-    outline: none;
-    border-color: #3498db;
-    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
-  }
-  
-  .date-preset {
-    margin-top: 5px;
-    padding: 5px 8px;
-    font-size: 12px;
-    background-color: #f1f1f1;
-    color: #555;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-  
-  .date-preset:hover {
-    background-color: #e0e0e0;
-  }
-  </style>
+
+    function startDateSelected(date: string): void {
+      localBill.startDate = date
+      startDateMenu.value = false
+      updateBill()
+    }
+
+    function endDateSelected(date: string): void {
+      localBill.endDate = date
+      endDateMenu.value = false
+      updateBill()
+    }
+
+    watch(
+      () => props.bill,
+      (newValue) => {
+        Object.assign(localBill, newValue)
+      },
+      { deep: true },
+    )
+
+    const updateBill = (): void => {
+      emit('update:bill', { ...localBill })
+    }
+
+    // Get the first day of the current month in YYYY-MM-DD format
+    const getFirstDayOfCurrentMonth = (): string => {
+      const now = new Date()
+      // Using year 2025 and month 3 (March) per the provided current date
+      return `2025-03-01`
+    }
+
+    // Get the last day of the current month in YYYY-MM-DD format
+    const getLastDayOfCurrentMonth = (): string => {
+      // Last day of March is the 31st
+      return `2025-03-31`
+    }
+
+    // Set the start date to the first day of the current month
+    const setDefaultStartDate = (): void => {
+      localBill.startDate = getFirstDayOfCurrentMonth()
+      updateBill()
+    }
+
+    // Set the end date to the last day of the current month
+    const setDefaultEndDate = (): void => {
+      localBill.endDate = getLastDayOfCurrentMonth()
+      updateBill()
+    }
+
+    onMounted(() => {
+      // If no dates are set (initial load), set to current month
+      if (!localBill.startDate) {
+        setDefaultStartDate()
+      }
+      if (!localBill.endDate) {
+        setDefaultEndDate()
+      }
+    })
+
+    return {
+      localBill,
+      updateBill,
+      setDefaultStartDate,
+      setDefaultEndDate,
+      getHeaderColor,
+      startDateMenu,
+      endDateMenu,
+      formattedStartDate,
+      formattedEndDate,
+      startDateSelected,
+      endDateSelected,
+    }
+  },
+})
+</script>
+
+<style scoped>
+.bill-card {
+  transition: transform 0.2s;
+}
+
+.bill-card:hover {
+  transform: translateY(-3px);
+}
+</style>
