@@ -154,10 +154,30 @@ const people = reactive<Person[]>([
 
 const paymentResultTableHeaders = [
     { title: 'Person', align: 'center', key: 'id' },
-    { title: 'Electric', align: 'end', key: 'electric.payment' },
-    { title: 'Water', align: 'end', key: 'water.payment' },
-    { title: 'Gas', align: 'end', key: 'gas.payment' },
-    { title: 'Total', align: 'end', key: 'totalPayment' },
+    { 
+      title: 'Electric', 
+      align: 'end', 
+      key: 'electric.payment',
+      format: (value: number) => `$${value.toFixed(2)}`
+    },
+    { 
+      title: 'Water', 
+      align: 'end', 
+      key: 'water.payment',
+      format: (value: number) => `$${value.toFixed(2)}`
+    },
+    { 
+      title: 'Gas', 
+      align: 'end', 
+      key: 'gas.payment',
+      format: (value: number) => `$${value.toFixed(2)}`
+    },
+    { 
+      title: 'Total', 
+      align: 'end', 
+      key: 'totalPayment',
+      format: (value: number) => `$${value.toFixed(2)}`
+    },
   ]
 
 const results = reactive<CalculationResult[]>([])
