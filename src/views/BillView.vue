@@ -37,7 +37,6 @@
 
     <!-- person-section -->
     <div class="person-section">
-      <h2>Roommates</h2>
       <div id="people-container">
         <PersonCard
           v-for="(person, index) in people"
@@ -62,9 +61,10 @@
 
     <v-btn color="primary" size="large" @click="calculatePayment" block> Calculate Payment </v-btn>
 
+    <div class="text-h4 my-6 font-weight-bold">Payment Results</div>
+
     <!-- results-container -->
     <div class="results" id="results-container" v-if="showResults">
-      <h2>Payment Results</h2>
       <div id="results">
         <div class="person-result" v-for="result in results" :key="'result-' + result.id">
           <h3>Person {{ result.id }}</h3>
@@ -357,61 +357,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', 'Arial', sans-serif;
-}
-
-body {
-  background-color: #f9f9f9;
-  padding: 20px;
-  color: #333;
-}
-
-.container {
-  max-width: 1000px;
-  margin: 0 auto;
-  background-color: #fff;
-  padding: 30px;
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
-  border-radius: 12px;
-}
-
-h1,
-h2,
-h3 {
-  color: #2c3e50;
-  margin-bottom: 15px;
-}
-
-h1 {
-  text-align: center;
-  font-size: 32px;
-  padding-bottom: 10px;
-  border-bottom: 2px solid #ecf0f1;
-  margin-bottom: 10px;
-}
-
-.subtitle {
-  text-align: center;
-  color: #7f8c8d;
-  margin-bottom: 30px;
-  font-size: 16px;
-}
-
-h2 {
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-
-h3 {
-  font-size: 18px;
-  color: #34495e;
-}
-
-.bill-section,
 .person-section,
 .results {
   margin-bottom: 30px;
@@ -419,13 +364,6 @@ h3 {
   background-color: #f5f7fa;
   border-radius: 10px;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.03);
-}
-
-.bill-input-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-  margin-bottom: 20px;
 }
 
 .person-buttons {
@@ -510,10 +448,6 @@ h3 {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.summary h3 {
-  margin-bottom: 15px;
 }
 
 #summary-table {

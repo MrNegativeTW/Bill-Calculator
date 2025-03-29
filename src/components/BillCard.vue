@@ -1,5 +1,5 @@
 <template>
-  <v-card :class="className" class="bill-card">
+  <v-card class="rounded-lg" :class="className">
     <v-card-title class="font-weight-bold my-2" :class="getHeaderColor">{{ title }}</v-card-title>
 
     <v-card-text>
@@ -33,7 +33,7 @@
                   v-bind="props"
                   variant="outlined"
                 >
-                  <template v-slot:append>
+                  <template v-slot:append-inner>
                     <v-btn
                       icon
                       variant="text"
@@ -72,7 +72,7 @@
                   v-bind="props"
                   variant="outlined"
                 >
-                  <template v-slot:append>
+                  <template v-slot:append-inner>
                     <v-btn
                       icon
                       variant="text"
@@ -240,11 +240,4 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.bill-card {
-  transition: transform 0.2s;
-}
-
-.bill-card:hover {
-  transform: translateY(-3px);
-}
 </style>
