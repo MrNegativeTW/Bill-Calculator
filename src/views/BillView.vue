@@ -2,41 +2,42 @@
   <v-container>
     <div class="text-h4 my-6 font-weight-bold">Bills</div>
 
-    <v-row>
-      <!-- Electric Bill -->
-      <v-col cols="12" sm="6" md="4" lg="4">
-        <BillCard
-          title="Electric Bill"
-          :bill="bills.electric"
-          @update:bill="updateBill('electric', $event)"
-          class-name="electric"
-        />
-      </v-col>
+    <v-card class="mb-6 pa-4 rounded-lg" color="#f5f7fa" flat>
+      <v-row>
+        <!-- Electric Bill -->
+        <v-col cols="12" sm="6" md="4" lg="4">
+          <BillCard
+            title="Electric Bill"
+            :bill="bills.electric"
+            @update:bill="updateBill('electric', $event)"
+            class-name="electric"
+          />
+        </v-col>
 
-      <v-col cols="12" sm="6" md="4" lg="4">
-        <!-- Water Bill -->
-        <BillCard
-          title="Water Bill"
-          :bill="bills.water"
-          @update:bill="updateBill('water', $event)"
-          class-name="water"
-        />
-      </v-col>
-      <v-col cols="12" sm="6" md="4" lg="4">
-        <!-- Gas Bill -->
-        <BillCard
-          title="Gas Bill"
-          :bill="bills.gas"
-          @update:bill="updateBill('gas', $event)"
-          class-name="gas"
-        />
-      </v-col>
-    </v-row>
+        <v-col cols="12" sm="6" md="4" lg="4">
+          <!-- Water Bill -->
+          <BillCard
+            title="Water Bill"
+            :bill="bills.water"
+            @update:bill="updateBill('water', $event)"
+            class-name="water"
+          />
+        </v-col>
+        <v-col cols="12" sm="6" md="4" lg="4">
+          <!-- Gas Bill -->
+          <BillCard
+            title="Gas Bill"
+            :bill="bills.gas"
+            @update:bill="updateBill('gas', $event)"
+            class-name="gas"
+          />
+        </v-col>
+      </v-row>
+    </v-card>
 
     <div class="text-h4 my-6 font-weight-bold">Roommates</div>
 
-    <!-- person-section -->
-    <div class="person-section">
+    <v-card class="mb-6 pa-4 rounded-lg" color="#f5f7fa" flat>
       <div id="people-container">
         <PersonCard
           v-for="(person, index) in people"
@@ -46,33 +47,37 @@
           @update:person="updatePerson(index, $event)"
         />
       </div>
-      <div class="person-buttons">
-        <v-btn @click="addPerson" color="success" prepend-icon="mdi-plus"> Add Person </v-btn>
-        <v-btn
+      <v-row align="center" justify="center">
+        <v-col cols="auto">
+          <v-btn @click="addPerson" color="success" prepend-icon="mdi-plus">Add</v-btn>
+        </v-col>
+        <v-col cols="auto">
+          <v-btn
           @click="removePerson"
           color="error"
           prepend-icon="mdi-minus"
           :disabled="people.length <= 1"
         >
-          Remove Person
+          Remove
         </v-btn>
-      </div>
-    </div>
+        </v-col>
+      </v-row>
+    </v-card>
 
-    <v-btn color="primary" size="large" @click="calculatePayment" block> Calculate Payment </v-btn>
+    <v-btn color="primary" size="large" @click="calculatePayment" block>Calculate Payment</v-btn>
 
     <div class="text-h4 my-6 font-weight-bold">Payment Results</div>
 
     <!-- results-container -->
     <div class="results" id="results-container" v-if="showResults">
       <div id="results">
-        <PaymentResultCard 
-          v-for="result in results" 
+        <PaymentResultCard
+          v-for="result in results"
           :key="'result-' + result.id"
           :result="result"
         />
       </div>
-      
+
       <div class="summary" id="summary-container">
         <h3>Summary</h3>
         <table id="summary-table">
@@ -331,19 +336,12 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.person-section,
 .results {
   margin-bottom: 30px;
   padding: 25px;
   background-color: #f5f7fa;
   border-radius: 10px;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.03);
-}
-
-.person-buttons {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
 }
 
 #results {
