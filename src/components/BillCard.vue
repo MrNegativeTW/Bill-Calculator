@@ -103,8 +103,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, reactive, watch, onMounted, computed, ref } from 'vue'
-import { Bill } from '../types.ts'
+import { defineComponent, reactive, watch, onMounted, computed, ref } from 'vue'
+import type { PropType } from 'vue'
+import type { Bill } from '../types.ts'
 
 export default defineComponent({
   name: 'BillCard',

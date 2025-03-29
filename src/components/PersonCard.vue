@@ -89,8 +89,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, reactive, ref, computed, watch } from 'vue'
-import { Person } from '../types.ts'
+import { defineComponent, reactive, ref, computed, watch } from 'vue'
+import type { PropType } from 'vue'
+import type { Person } from '../types.ts'
 
 export default defineComponent({
   name: 'PersonCard',
