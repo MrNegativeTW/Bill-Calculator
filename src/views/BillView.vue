@@ -93,7 +93,7 @@
       <div class="text-h6 font-weight-bold">Overview</div>
 
       <v-data-table
-        class="rounded-lg mt-4"
+        class="rounded-lg mt-4 elevation-1"
         :headers="paymentResultTableHeaders"
         :items="results"
         item-value="name"
