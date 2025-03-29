@@ -48,14 +48,19 @@
         />
       </div>
       <div class="person-buttons">
-        <button id="add-person" @click="addPerson">Add Person</button>
-        <button id="remove-person" @click="removePerson" :disabled="people.length <= 1">
+        <v-btn @click="addPerson" color="success" prepend-icon="mdi-plus"> Add Person </v-btn>
+        <v-btn
+          @click="removePerson"
+          color="error"
+          prepend-icon="mdi-minus"
+          :disabled="people.length <= 1"
+        >
           Remove Person
-        </button>
+        </v-btn>
       </div>
     </div>
 
-    <v-btn block color="primary" size="large" @click="calculatePayment">Calculate Payment</v-btn>
+    <v-btn color="primary" size="large" @click="calculatePayment" block> Calculate Payment </v-btn>
 
     <!-- results-container -->
     <div class="results" id="results-container" v-if="showResults">
@@ -427,52 +432,6 @@ h3 {
   display: flex;
   gap: 10px;
   margin-top: 10px;
-}
-
-button {
-  padding: 12px 18px;
-  border: none;
-  border-radius: 6px;
-  font-size: 15px;
-  font-weight: 500;
-  cursor: pointer;
-  transition:
-    background-color 0.2s,
-    transform 0.1s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-button:hover:not(:disabled) {
-  transform: translateY(-2px);
-}
-
-button:active:not(:disabled) {
-  transform: translateY(0);
-}
-
-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-#add-person {
-  background-color: #2ecc71;
-  color: white;
-}
-
-#add-person:hover:not(:disabled) {
-  background-color: #27ae60;
-}
-
-#remove-person {
-  background-color: #e74c3c;
-  color: white;
-}
-
-#remove-person:hover:not(:disabled) {
-  background-color: #c0392b;
 }
 
 #results {
