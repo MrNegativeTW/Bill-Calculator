@@ -98,8 +98,6 @@
             <div class="text-center mb-1">{{ localBill.days }} days</div>
           </v-col>
         </v-row>
-
-        
       </v-form>
     </v-card-text>
   </v-card>
@@ -109,7 +107,11 @@
 import { defineComponent, reactive, watch, onMounted, computed, ref } from 'vue'
 import type { PropType } from 'vue'
 import type { Bill } from '../types.ts'
-import { getFirstDayOfCurrentMonth, getLastDayOfCurrentMonth } from '../utils/dateUtils'
+import {
+  getFirstDayOfCurrentMonth,
+  getLastDayOfCurrentMonth,
+  getFormattedDateDisplay,
+} from '../utils/dateUtils'
 
 export default defineComponent({
   name: 'BillCard',
@@ -146,7 +148,7 @@ export default defineComponent({
     })
 
     const getIcon = computed(() => {
-      switch(props.className) {
+      switch (props.className) {
         case 'electric':
           return 'mdi-lightning-bolt'
         case 'water':
@@ -159,27 +161,12 @@ export default defineComponent({
     })
 
     const formattedStartDate = computed(() => {
-      return formatDateDisplay(localBill.startDate)
+      return getFormattedDateDisplay(localBill.startDate)
     })
 
     const formattedEndDate = computed(() => {
-      return formatDateDisplay(localBill.endDate)
+      return getFormattedDateDisplay(localBill.endDate)
     })
-
-    function formatDateDisplay(dateStr: string | undefined): string {
-      if (!dateStr) return ''
-
-      try {
-        const date = new Date(dateStr)
-        return new Intl.DateTimeFormat('en-US', {
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric',
-        }).format(date)
-      } catch (e) {
-        return dateStr
-      }
-    }
 
     function startDateSelected(date: string): void {
       localBill.startDate = date
@@ -245,5 +232,4 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

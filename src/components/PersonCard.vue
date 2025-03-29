@@ -40,7 +40,10 @@
             <v-date-picker
               v-model="localPerson.startDate"
               color="primary"
-              @update:model-value="startDateMenu = false;updatePerson()"
+              @update:model-value="
+                startDateMenu = false;
+                updatePerson()
+              "
               show-adjacent-months
             ></v-date-picker>
           </v-menu>
@@ -80,7 +83,10 @@
             <v-date-picker
               v-model="localPerson.endDate"
               color="primary"
-              @update:model-value="endDateMenu = false;updatePerson()"
+              @update:model-value="
+                endDateMenu = false;
+                updatePerson()
+              "
               show-adjacent-months
             ></v-date-picker>
           </v-menu>
@@ -98,7 +104,11 @@
 import { defineComponent, reactive, ref, computed, watch } from 'vue'
 import type { PropType } from 'vue'
 import type { Person } from '../types.ts'
-import { getFirstDayOfCurrentMonth, getLastDayOfCurrentMonth } from '../utils/dateUtils'
+import {
+  getFirstDayOfCurrentMonth,
+  getLastDayOfCurrentMonth,
+  getFormattedDateDisplay,
+} from '../utils/dateUtils'
 
 export default defineComponent({
   name: 'PersonCard',
@@ -118,11 +128,11 @@ export default defineComponent({
     const endDateMenu = ref(false)
 
     const formattedStartDate = computed(() => {
-      return localPerson.startDate ? new Date(localPerson.startDate).toLocaleDateString() : ''
+      return getFormattedDateDisplay(localPerson.startDate)
     })
 
     const formattedEndDate = computed(() => {
-      return localPerson.endDate ? new Date(localPerson.endDate).toLocaleDateString() : ''
+      return getFormattedDateDisplay(localPerson.endDate)
     })
 
     // Set the start date to the first day of the current month
