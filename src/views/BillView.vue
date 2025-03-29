@@ -66,40 +66,13 @@
     <!-- results-container -->
     <div class="results" id="results-container" v-if="showResults">
       <div id="results">
-        <div class="person-result" v-for="result in results" :key="'result-' + result.id">
-          <h3>Person {{ result.id }}</h3>
-          <div class="resident-days">Total Occupancy: {{ result.totalDays }} days</div>
-          <div class="payment-breakdown">
-            <!-- Electric bill details -->
-            <div class="bill-payment electric" v-if="bills.electric.amount > 0">
-              <div>
-                <div class="bill-payment-label">Electric Bill</div>
-                <div class="overlap-days">{{ result.electric.overlapDays }} days overlap</div>
-              </div>
-              <div class="payment-amount">${{ result.electric.payment.toFixed(2) }}</div>
-            </div>
-
-            <!-- Water bill details -->
-            <div class="bill-payment water" v-if="bills.water.amount > 0">
-              <div>
-                <div class="bill-payment-label">Water Bill</div>
-                <div class="overlap-days">{{ result.water.overlapDays }} days overlap</div>
-              </div>
-              <div class="payment-amount">${{ result.water.payment.toFixed(2) }}</div>
-            </div>
-
-            <!-- Gas bill details -->
-            <div class="bill-payment gas" v-if="bills.gas.amount > 0">
-              <div>
-                <div class="bill-payment-label">Gas Bill</div>
-                <div class="overlap-days">{{ result.gas.overlapDays }} days overlap</div>
-              </div>
-              <div class="payment-amount">${{ result.gas.payment.toFixed(2) }}</div>
-            </div>
-          </div>
-          <div class="total-payment">Total Payment: ${{ result.totalPayment.toFixed(2) }}</div>
-        </div>
+        <PaymentResultCard 
+          v-for="result in results" 
+          :key="'result-' + result.id"
+          :result="result"
+        />
       </div>
+      
       <div class="summary" id="summary-container">
         <h3>Summary</h3>
         <table id="summary-table">
@@ -131,6 +104,7 @@
 import { reactive, onMounted } from 'vue'
 import BillCard from '../components/BillCard.vue'
 import PersonCard from '../components/PersonCard.vue'
+import PaymentResultCard from '../components/PaymentResultCard.vue'
 import type { Bill, Person, CalculationResult, BillType } from '../types'
 
 // Define initial bill state with proper types
@@ -377,69 +351,6 @@ onMounted(() => {
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
   margin-bottom: 30px;
-}
-
-.person-result {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.person-result h3 {
-  margin-bottom: 15px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #eee;
-}
-
-.resident-days {
-  font-size: 15px;
-  margin-bottom: 15px;
-  color: #555;
-}
-
-.payment-breakdown {
-  margin-bottom: 20px;
-}
-
-.bill-payment {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
-  margin-bottom: 8px;
-  background-color: #f8f9fa;
-  border-radius: 5px;
-}
-
-.bill-payment.electric {
-  border-left: 4px solid #3498db;
-}
-
-.bill-payment.water {
-  border-left: 4px solid #2ecc71;
-}
-
-.bill-payment.gas {
-  border-left: 4px solid #e74c3c;
-}
-
-.bill-payment-label {
-  font-weight: 500;
-}
-
-.overlap-days {
-  font-size: 13px;
-  color: #7f8c8d;
-}
-
-.total-payment {
-  font-size: 20px;
-  font-weight: bold;
-  color: #2c3e50;
-  text-align: right;
-  padding-top: 10px;
-  margin-top: 10px;
-  border-top: 1px dashed #ddd;
 }
 
 .summary {
