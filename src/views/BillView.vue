@@ -1,8 +1,10 @@
 <template>
   <v-container>
-    <v-row justify="space-around">
+    <div class="text-h4 my-6 font-weight-bold">Bills</div>
+
+    <v-row>
       <!-- Electric Bill -->
-      <v-col>
+      <v-col cols="12" sm="6" md="4" lg="4">
         <BillCard
           title="Electric Bill"
           :bill="bills.electric"
@@ -11,7 +13,7 @@
         />
       </v-col>
 
-      <v-col>
+      <v-col cols="12" sm="6" md="4" lg="4">
         <!-- Water Bill -->
         <BillCard
           title="Water Bill"
@@ -20,7 +22,7 @@
           class-name="water"
         />
       </v-col>
-      <v-col>
+      <v-col cols="12" sm="6" md="4" lg="4">
         <!-- Gas Bill -->
         <BillCard
           title="Gas Bill"
@@ -30,6 +32,8 @@
         />
       </v-col>
     </v-row>
+
+    <div class="text-h4 my-6 font-weight-bold">Roommates</div>
 
     <!-- person-section -->
     <div class="person-section">
@@ -51,7 +55,7 @@
       </div>
     </div>
 
-    <button id="calculate-btn" @click="calculatePayment">Calculate Payment</button>
+    <v-btn block color="primary" size="large" @click="calculatePayment">Calculate Payment</v-btn>
 
     <!-- results-container -->
     <div class="results" id="results-container" v-if="showResults">
@@ -370,7 +374,9 @@ body {
   border-radius: 12px;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   color: #2c3e50;
   margin-bottom: 15px;
 }
@@ -400,7 +406,9 @@ h3 {
   color: #34495e;
 }
 
-.bill-section, .person-section, .results {
+.bill-section,
+.person-section,
+.results {
   margin-bottom: 30px;
   padding: 25px;
   background-color: #f5f7fa;
@@ -428,7 +436,9 @@ button {
   font-size: 15px;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s, transform 0.1s;
+  transition:
+    background-color 0.2s,
+    transform 0.1s;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -463,21 +473,6 @@ button:disabled {
 
 #remove-person:hover:not(:disabled) {
   background-color: #c0392b;
-}
-
-#calculate-btn {
-  display: block;
-  width: 100%;
-  padding: 15px;
-  font-size: 18px;
-  margin: 20px 0;
-  background-color: #3498db;
-  color: white;
-  transition: background-color 0.2s;
-}
-
-#calculate-btn:hover {
-  background-color: #2980b9;
 }
 
 #results {
