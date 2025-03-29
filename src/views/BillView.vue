@@ -53,30 +53,26 @@
         </v-col>
         <v-col cols="auto">
           <v-btn
-          @click="removePerson"
-          color="error"
-          prepend-icon="mdi-minus"
-          :disabled="people.length <= 1"
-        >
-          Remove
-        </v-btn>
+            @click="removePerson"
+            color="error"
+            prepend-icon="mdi-minus"
+            :disabled="people.length <= 1"
+          >
+            Remove
+          </v-btn>
         </v-col>
       </v-row>
     </v-card>
 
     <v-btn color="primary" size="large" @click="calculatePayment" block>Calculate Payment</v-btn>
 
-    <div class="text-h4 my-6 font-weight-bold">Payment Results</div>
+    <div class="text-h4 my-4 font-weight-bold">Payment Results</div>
 
     <v-card class="mb-6 pa-4 rounded-lg" color="#f5f7fa" flat>
-      <v-row>
-        <v-col cols="12" sm="6" md="4" lg="4" v-for="result in results" :key="result.id">
-          <PaymentResultCard :result="result" />
-        </v-col>
-      </v-row>
+      <div class="text-h6 font-weight-bold">Overview</div>
 
       <v-data-table
-        class="rounded-lg"
+        class="rounded-lg mt-4"
         :headers="paymentResultTableHeaders"
         :items="results"
         item-value="name"
@@ -85,30 +81,13 @@
         hide-default-footer
       ></v-data-table>
 
-      <div class="summary" id="summary-container">
-        <h3>Summary</h3>
-        <table id="summary-table">
-          <thead>
-            <tr>
-              <th>Person</th>
-              <th>Electric</th>
-              <th>Water</th>
-              <th>Gas</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody id="summary-body">
-            <tr v-for="result in results" :key="'summary-' + result.id">
-              <td>Person {{ result.id }}</td>
-              <td>${{ result.electric.payment.toFixed(2) }}</td>
-              <td>${{ result.water.payment.toFixed(2) }}</td>
-              <td>${{ result.gas.payment.toFixed(2) }}</td>
-              <td>${{ result.totalPayment.toFixed(2) }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <div class="text-h6 mt-8 mb-4 font-weight-bold">Details</div>
 
+      <v-row>
+        <v-col cols="12" sm="6" md="4" lg="4" v-for="result in results" :key="result.id">
+          <PaymentResultCard :result="result" />
+        </v-col>
+      </v-row>
     </v-card>
   </v-container>
 </template>
@@ -153,32 +132,32 @@ const people = reactive<Person[]>([
 ])
 
 const paymentResultTableHeaders = [
-    { title: 'Person', align: 'center', key: 'id' },
-    { 
-      title: 'Electric', 
-      align: 'end', 
-      key: 'electric.payment',
-      format: (value: number) => `$${value.toFixed(2)}`
-    },
-    { 
-      title: 'Water', 
-      align: 'end', 
-      key: 'water.payment',
-      format: (value: number) => `$${value.toFixed(2)}`
-    },
-    { 
-      title: 'Gas', 
-      align: 'end', 
-      key: 'gas.payment',
-      format: (value: number) => `$${value.toFixed(2)}`
-    },
-    { 
-      title: 'Total', 
-      align: 'end', 
-      key: 'totalPayment',
-      format: (value: number) => `$${value.toFixed(2)}`
-    },
-  ]
+  { title: 'Person', align: 'center', key: 'id' },
+  {
+    title: 'Electric',
+    align: 'end',
+    key: 'electric.payment',
+    format: (value: number) => `$${value.toFixed(2)}`,
+  },
+  {
+    title: 'Water',
+    align: 'end',
+    key: 'water.payment',
+    format: (value: number) => `$${value.toFixed(2)}`,
+  },
+  {
+    title: 'Gas',
+    align: 'end',
+    key: 'gas.payment',
+    format: (value: number) => `$${value.toFixed(2)}`,
+  },
+  {
+    title: 'Total',
+    align: 'end',
+    key: 'totalPayment',
+    format: (value: number) => `$${value.toFixed(2)}`,
+  },
+]
 
 const results = reactive<CalculationResult[]>([])
 const showResults = reactive<{ value: boolean }>({ value: false })
@@ -371,5 +350,4 @@ onMounted(() => {
 })
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
