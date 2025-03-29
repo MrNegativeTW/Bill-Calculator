@@ -121,7 +121,7 @@ import BillCard from '../components/BillCard.vue'
 import PersonCard from '../components/PersonCard.vue'
 import PaymentResultCard from '../components/PaymentResultCard.vue'
 import { SnackbarKey } from '@/composables/useSnackbar'
-import type { Bill, Person, CalculationResult, BillType } from '../types'
+import type { BillType, Bill, Person, CalculationResult } from '../types'
 
 const showSnackbar = inject(SnackbarKey)
 
@@ -158,29 +158,29 @@ const people = reactive<Person[]>([
 ])
 
 const paymentResultTableHeaders = [
-  { title: 'Person', align: 'center', key: 'id' },
+  { title: 'Person', align: 'center' as const, value: 'id' },
   {
     title: 'Electric',
-    align: 'end',
-    key: 'electric.payment',
+    align: 'end' as const,
+    value: 'electric.payment',
     format: (value: number) => `$${value.toFixed(2)}`,
   },
   {
     title: 'Water',
-    align: 'end',
-    key: 'water.payment',
+    align: 'end' as const,
+    value: 'water.payment',
     format: (value: number) => `$${value.toFixed(2)}`,
   },
   {
     title: 'Gas',
-    align: 'end',
-    key: 'gas.payment',
+    align: 'end' as const,
+    value: 'gas.payment',
     format: (value: number) => `$${value.toFixed(2)}`,
   },
   {
     title: 'Total',
-    align: 'end',
-    key: 'totalPayment',
+    align: 'end' as const,
+    value: 'totalPayment',
     format: (value: number) => `$${value.toFixed(2)}`,
   },
 ]
@@ -372,7 +372,7 @@ const calculatePayments = (): CalculationResult[] => {
 }
 
 const openPrivacy = () => {
-  showSnackbar?.('We don\'t do that here.')
+  showSnackbar?.("We don't do that here.")
 }
 
 onMounted(() => {
