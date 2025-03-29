@@ -68,8 +68,41 @@
 
     <div class="text-h4 my-6 font-weight-bold">Payment Results</div>
 
+    <v-card class="mb-6 pa-4 rounded-lg" color="#f5f7fa" flat>
+      <v-row>
+        <v-col cols="12" sm="6" md="4" lg="4" v-for="result in results" :key="result.id">
+          <PaymentResultCard :result="result" />
+        </v-col>
+      </v-row>
+
+      <div class="summary" id="summary-container">
+        <h3>Summary</h3>
+        <table id="summary-table">
+          <thead>
+            <tr>
+              <th>Person</th>
+              <th>Electric</th>
+              <th>Water</th>
+              <th>Gas</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody id="summary-body">
+            <tr v-for="result in results" :key="'summary-' + result.id">
+              <td>Person {{ result.id }}</td>
+              <td>${{ result.electric.payment.toFixed(2) }}</td>
+              <td>${{ result.water.payment.toFixed(2) }}</td>
+              <td>${{ result.gas.payment.toFixed(2) }}</td>
+              <td>${{ result.totalPayment.toFixed(2) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </v-card>
+
     <!-- results-container -->
-    <div class="results" id="results-container" v-if="showResults">
+    <!-- <div class="results" id="results-container" v-if="showResults">
       <div id="results">
         <PaymentResultCard
           v-for="result in results"
@@ -101,7 +134,7 @@
           </tbody>
         </table>
       </div>
-    </div>
+    </div> -->
   </v-container>
 </template>
 
@@ -336,20 +369,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.results {
-  margin-bottom: 30px;
-  padding: 25px;
-  background-color: #f5f7fa;
-  border-radius: 10px;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.03);
-}
-
-#results {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
-  margin-bottom: 30px;
-}
 
 .summary {
   margin-top: 30px;
