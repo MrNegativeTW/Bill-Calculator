@@ -263,7 +263,7 @@ const calculatePayment = (): void => {
     const endDate = new Date(bill.endDate)
 
     if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
-      showSnackbar?.('Please enter valid dates for the ${billType} billunt')
+      showSnackbar?.('Please enter valid dates for the ${billType} bill')
       return
     }
 
