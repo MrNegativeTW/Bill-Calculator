@@ -1,6 +1,6 @@
 <template>
-  <v-card class="rounded-lg" :class="className">
-    <v-card-title class="font-weight-bold my-2" :class="getHeaderColor">
+  <v-card class="rounded-lg" :class="className" elevation="4">
+    <v-card-title class="font-weight-bold my-2">
       <v-icon :icon="getIcon" class="mr-2"></v-icon>
       {{ title }}
     </v-card-title>
@@ -134,19 +134,6 @@ export default defineComponent({
     const startDateMenu = ref(false)
     const endDateMenu = ref(false)
 
-    const getHeaderColor = computed(() => {
-      switch (props.className) {
-        case 'electric':
-          return 'text-black'
-        case 'water':
-          return 'text-black'
-        case 'gas':
-          return 'text-black'
-        default:
-          return ''
-      }
-    })
-
     const getIcon = computed(() => {
       switch (props.className) {
         case 'electric':
@@ -219,7 +206,6 @@ export default defineComponent({
       updateBill,
       setDefaultStartDate,
       setDefaultEndDate,
-      getHeaderColor,
       getIcon,
       startDateMenu,
       endDateMenu,
