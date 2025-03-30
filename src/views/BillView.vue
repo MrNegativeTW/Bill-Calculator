@@ -8,6 +8,7 @@
           {{ $t('billview.subtitles.banner') }}
         </div>
         <v-btn
+          class="rounded-xl"
           color="primary"
           href="https://github.com/MrNegativeTW/Bill-Calculator"
           target="_blank"
@@ -70,12 +71,13 @@
       </div>
       <v-row align="center" justify="center">
         <v-col cols="auto">
-          <v-btn @click="addPerson" color="success" prepend-icon="mdi-plus">{{
+          <v-btn class="rounded-xl" @click="addPerson" color="success" prepend-icon="mdi-plus">{{
             $t('billview.buttons.add_roommate')
           }}</v-btn>
         </v-col>
         <v-col cols="auto">
           <v-btn
+            class="rounded-xl"
             @click="removePerson"
             color="error"
             prepend-icon="mdi-minus"
@@ -87,7 +89,7 @@
       </v-row>
     </v-card>
 
-    <v-btn color="primary" size="large" prepend-icon="mdi-calculator " @click="calculatePayment" block>{{
+    <v-btn class="rounded-xl" color="primary" size="large" prepend-icon="mdi-calculator " @click="calculatePayment" block>{{
       $t('billview.buttons.calculate')
     }}</v-btn>
 
@@ -123,11 +125,14 @@
 
 <script setup lang="ts">
 import { reactive, onMounted, inject } from 'vue'
+import { useI18n } from 'vue-i18n'
 import BillCard from '../components/BillCard.vue'
 import PersonCard from '../components/PersonCard.vue'
 import PaymentResultCard from '../components/PaymentResultCard.vue'
 import { SnackbarKey } from '@/composables/useSnackbar'
 import type { BillType, Bill, Person, CalculationResult } from '../types'
+
+const { t } = useI18n()
 
 const showSnackbar = inject(SnackbarKey)
 
@@ -258,7 +263,7 @@ const calculateDays = () => {
 
 const calculatePayment = (): void => {
   if (bills.electric.amount === 0 && bills.water.amount === 0 && bills.gas.amount === 0) {
-    showSnackbar?.('Please enter at least one bill amount')
+    showSnackbar?.(t('billview.errors.invalid_bills'))
     return
   }
 
@@ -269,12 +274,12 @@ const calculatePayment = (): void => {
     const endDate = new Date(bill.endDate)
 
     if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
-      showSnackbar?.('Please enter valid dates for the ${billType} bill')
+      showSnackbar?.(t('billview.errors.invalid_dates', { id: billType }))
       return
     }
 
     if (startDate > endDate) {
-      showSnackbar?.('Start date cannot be after end date for the ${billType} bill')
+      showSnackbar?.(t('billview.errors.dates_order'))
       return
     }
   }
@@ -285,12 +290,12 @@ const calculatePayment = (): void => {
     const endDate = new Date(person.endDate)
 
     if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
-      showSnackbar?.('Please enter valid dates for Person ${person.id}')
+      showSnackbar?.(t('billview.errors.invalid_dates', { id: person.id }))
       return
     }
 
     if (startDate > endDate) {
-      showSnackbar?.('Start date cannot be after end date for Person ${person.id}')
+      showSnackbar?.(t('billview.errors.dates_order'))
       return
     }
   }

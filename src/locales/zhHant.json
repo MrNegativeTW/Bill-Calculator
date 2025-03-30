@@ -18,6 +18,11 @@
             "add_roommate": "新增",
             "remove_roommate": "刪除",
             "calculate": "計算"
+        },
+        "errors": {
+            "invalid_bills": "請至少輸入一個帳單金額",
+            "invalid_dates": "請為人員 {id} 輸入有效日期",
+            "dates_order": "開始日期不能晚於結束日期"
         }
     },
     "billcard": {

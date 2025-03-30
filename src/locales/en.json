@@ -18,6 +18,11 @@
             "add_roommate": "Add",
             "remove_roommate": "Remove",
             "calculate": "Calculate"
+        },
+        "errors": {
+            "invalid_bills": "Please enter at least one bill amount",
+            "invalid_dates": "Please enter valid dates for Person {id}",
+            "dates_order": "Start date cannot be after end date"
         }
     },
     "billcard": {
