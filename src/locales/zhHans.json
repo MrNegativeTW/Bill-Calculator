@@ -4,41 +4,49 @@
     },
     "billview": {
         "titles": {
-            "banner": "水電瓦斯費計算機",
-            "bill": "帳單",
+            "banner": "水电瓦斯费计算机",
+            "bill": "帐单",
             "roommates": "室友",
-            "result": "計算結果"
+            "result": "计算结果"
         },
         "subtitles": {
-            "banner": "幫你計算每位室友該付多少水電瓦斯費",
-            "result_overview": "總計",
-            "result_details": "詳細"
+            "banner": "帮你计算每位室友该付多少水电瓦斯费",
+            "result_overview": "总计",
+            "result_details": "详细"
         },
         "buttons": {
             "add_roommate": "新增",
-            "remove_roommate": "刪除",
-            "calculate": "計算"
+            "remove_roommate": "删除",
+            "calculate": "计算"
         }
     },
     "billcard": {
         "titles": {
-            "electric": "電費",
-            "water": "水費",
-            "gas": "瓦斯費"
+            "electric": "电费",
+            "water": "水费",
+            "gas": "瓦斯费"
         },
         "fields_label": {
-            "amount": "金額 ($)",
-            "bill_start": "計費開始日",
-            "bill_end": "計費結束日"
+            "amount": "金额 ($)",
+            "bill_start": "计费开始日",
+            "bill_end": "计费结束日"
         }
     },
     "personcard": {
         "fields_label": {
-            "start": "開始日",
-            "end": "結束日"
+            "start": "开始日",
+            "end": "结束日"
         }
     },
     "payment_result_card": {
-        "language": "語言"
+        "title": "人员 {id}",
+        "occupancy": "使用时间",
+        "days_overlap": "天重叠",
+        "bill_details": {
+            "electric": "电费",
+            "water": "水费",
+            "gas": "瓦斯费"
+        },
+        "total_payment": "总计"
     }
 }
