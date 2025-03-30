@@ -1,7 +1,23 @@
 <template>
   <!-- Header Section -->
-  <v-card class="mb-6" color="#f5f7fa" flat width="100%">
+  <v-card
+    class="mb-6 rounded-b-xl elevation-4"
+    flat
+    width="100%"
+    :color="isDarkTheme ? undefined : 'blue-grey-lighten-5'"
+  >
     <v-container max-width="900px">
+      <!-- Theme toggle button positioned in top right corner -->
+      <!-- Let's go full automatically -->
+      <!-- <div class="position-absolute" style="top: 16px; right: 16px;">
+        <v-btn
+          icon
+          @click="toggleTheme"
+        >
+          <v-icon>{{ isDarkTheme ? 'mdi-weather-night' : 'mdi-weather-sunny' }}</v-icon>
+        </v-btn>
+      </div> -->
+
       <div class="py-8">
         <div class="text-h3 font-weight-bold mb-2">{{ $t('billview.titles.banner') }}</div>
         <div class="text-subtitle-1 mb-4">
@@ -24,7 +40,11 @@
   <v-container class="mb-4" max-width="900px">
     <div class="text-h4 my-6 font-weight-bold">{{ $t('billview.titles.bill') }}</div>
 
-    <v-card class="mb-6 pa-4 rounded-lg" color="#f5f7fa" flat>
+    <v-card
+      class="mb-6 pa-4 rounded-lg"
+      :color="isDarkTheme ? 'grey-darken-3' : 'blue-grey-lighten-5'"
+      flat
+    >
       <v-row>
         <!-- Electric Bill -->
         <v-col cols="12" sm="6" md="4" lg="4">
@@ -59,7 +79,11 @@
 
     <div class="text-h4 mt-12 mb-6 font-weight-bold">{{ $t('billview.titles.roommates') }}</div>
 
-    <v-card class="mb-6 pa-4 rounded-lg" color="#f5f7fa" flat>
+    <v-card
+      class="mb-6 pa-4 rounded-lg"
+      :color="isDarkTheme ? 'grey-darken-3' : 'blue-grey-lighten-5'"
+      flat
+    >
       <div id="people-container">
         <PersonCard
           v-for="(person, index) in people"
@@ -71,11 +95,6 @@
       </div>
       <v-row align="center" justify="center">
         <v-col cols="auto">
-          <v-btn class="rounded-xl" @click="addPerson" color="success" prepend-icon="mdi-plus">{{
-            $t('billview.buttons.add_roommate')
-          }}</v-btn>
-        </v-col>
-        <v-col cols="auto">
           <v-btn
             class="rounded-xl"
             @click="removePerson"
@@ -86,16 +105,31 @@
             {{ $t('billview.buttons.remove_roommate') }}
           </v-btn>
         </v-col>
+        <v-col cols="auto">
+          <v-btn class="rounded-xl" @click="addPerson" color="success" prepend-icon="mdi-plus">{{
+            $t('billview.buttons.add_roommate')
+          }}</v-btn>
+        </v-col>
       </v-row>
     </v-card>
 
-    <v-btn class="rounded-xl" color="primary" size="large" prepend-icon="mdi-calculator " @click="calculatePayment" block>{{
-      $t('billview.buttons.calculate')
-    }}</v-btn>
+    <v-btn
+      class="rounded-xl"
+      color="primary"
+      size="large"
+      prepend-icon="mdi-calculator "
+      @click="calculatePayment"
+      block
+      >{{ $t('billview.buttons.calculate') }}</v-btn
+    >
 
     <div class="text-h4 mt-12 mb-6 font-weight-bold">{{ $t('billview.titles.result') }}</div>
 
-    <v-card class="mb-6 pa-4 rounded-lg" color="#f5f7fa" flat>
+    <v-card
+      class="mb-6 pa-4 rounded-lg"
+      :color="isDarkTheme ? 'grey-darken-3' : 'blue-grey-lighten-5'"
+      flat
+    >
       <div class="text-h6 font-weight-bold">{{ $t('billview.subtitles.result_overview') }}</div>
 
       <v-data-table
@@ -126,15 +160,18 @@
 <script setup lang="ts">
 import { reactive, onMounted, inject } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { SnackbarKey } from '@/composables/useSnackbar'
+import { useThemes } from '@/composables/useThemes'
 import BillCard from '../components/BillCard.vue'
 import PersonCard from '../components/PersonCard.vue'
 import PaymentResultCard from '../components/PaymentResultCard.vue'
-import { SnackbarKey } from '@/composables/useSnackbar'
 import type { BillType, Bill, Person, CalculationResult } from '../types'
 
 const { t } = useI18n()
 
 const showSnackbar = inject(SnackbarKey)
+
+const { isDarkTheme, toggleTheme } = useThemes()
 
 // Define initial bill state with proper types
 const bills = reactive<Record<BillType, Bill>>({

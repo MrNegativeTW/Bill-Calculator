@@ -11,21 +11,23 @@
       
       <div class="payment-breakdown">
         <!-- Electric bill details -->
-        <div 
+        <v-sheet 
           v-if="result.electric.payment > 0"
-          class="bill-payment electric-border mb-2 rounded d-flex justify-space-between align-center"
+          class="electric-border mb-2 rounded d-flex justify-space-between align-center"
+          :color="isDarkTheme ? 'blue-grey-darken-4' : 'grey-lighten-4'"
         >
           <div class="pa-2">
             <div class="text-subtitle-2">{{ $t('payment_result_card.bill_details.electric') }}</div>
             <div class="text-caption text-grey">{{ result.electric.overlapDays }} {{ $t('payment_result_card.days_overlap') }}</div>
           </div>
           <div class="payment-amount pa-2">${{ result.electric.payment.toFixed(2) }}</div>
-        </div>
+        </v-sheet>
 
         <!-- Water bill details -->
         <div
           v-if="result.water.payment > 0"
-          class="bill-payment water-border mb-2 rounded d-flex justify-space-between align-center"
+          class="water-border mb-2 rounded d-flex justify-space-between align-center"
+          :color="isDarkTheme ? undefined : 'blue-grey-lighten-5'"
         >
           <div class="pa-2">
             <div class="text-subtitle-2">{{ $t('payment_result_card.bill_details.water') }}</div>
@@ -37,7 +39,8 @@
         <!-- Gas bill details -->
         <div
           v-if="result.gas.payment > 0"
-          class="bill-payment gas-border mb-2 rounded d-flex justify-space-between align-center"
+          class="gas-border mb-2 rounded d-flex justify-space-between align-center"
+          :color="isDarkTheme ? undefined : 'blue-grey-lighten-5'"
         >
           <div class="pa-2">
             <div class="text-subtitle-2">{{ $t('payment_result_card.bill_details.gas') }}</div>
@@ -58,6 +61,9 @@
 
 <script setup lang="ts">
 import type { CalculationResult } from '../types'
+import { useThemes } from '@/composables/useThemes'
+
+const { isDarkTheme, toggleTheme } = useThemes()
 
 // Define props
 defineProps<{
@@ -66,23 +72,7 @@ defineProps<{
 </script>
 
 <style scoped>
-.bill-payment {
-  background-color: rgb(248, 249, 250);
-}
-
 .payment-amount {
   font-weight: 500;
-}
-
-.electric-border {
-  /* border-left: 4px solid #1976d2;*/ /* Vuetify blue */
-}
-
-.water-border {
-  /* border-left: 4px solid #4caf50;*/ /* Vuetify green */
-}
-
-.gas-border {
-  /* border-left: 4px solid #f44336;*/ /* Vuetify red */
 }
 </style>
