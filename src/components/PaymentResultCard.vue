@@ -6,7 +6,7 @@
     
     <v-card-text>
       <div class="text-subtitle-1 text-grey-darken-1 mb-2">
-        Occupancy: {{ result.totalDays }} days
+        {{ $t('payment_result_card.occupancy') }} {{ result.totalDays }} {{ $t('global.days') }}
       </div>
       
       <div class="payment-breakdown">
@@ -16,8 +16,8 @@
           class="bill-payment electric-border mb-2 rounded d-flex justify-space-between align-center"
         >
           <div class="pa-2">
-            <div class="text-subtitle-2">Electric Bill</div>
-            <div class="text-caption text-grey">{{ result.electric.overlapDays }} days overlap</div>
+            <div class="text-subtitle-2">{{ $t('payment_result_card.bill_details.electric') }}</div>
+            <div class="text-caption text-grey">{{ result.electric.overlapDays }} {{ $t('payment_result_card.days_overlap') }}</div>
           </div>
           <div class="payment-amount pa-2">${{ result.electric.payment.toFixed(2) }}</div>
         </div>
@@ -28,8 +28,8 @@
           class="bill-payment water-border mb-2 rounded d-flex justify-space-between align-center"
         >
           <div class="pa-2">
-            <div class="text-subtitle-2">Water Bill</div>
-            <div class="text-caption text-grey">{{ result.water.overlapDays }} days overlap</div>
+            <div class="text-subtitle-2">{{ $t('payment_result_card.bill_details.water') }}</div>
+            <div class="text-caption text-grey">{{ result.water.overlapDays }} {{ $t('payment_result_card.days_overlap') }}</div>
           </div>
           <div class="payment-amount pa-2">${{ result.water.payment.toFixed(2) }}</div>
         </div>
@@ -40,8 +40,8 @@
           class="bill-payment gas-border mb-2 rounded d-flex justify-space-between align-center"
         >
           <div class="pa-2">
-            <div class="text-subtitle-2">Gas Bill</div>
-            <div class="text-caption text-grey">{{ result.gas.overlapDays }} days overlap</div>
+            <div class="text-subtitle-2">{{ $t('payment_result_card.bill_details.gas') }}</div>
+            <div class="text-caption text-grey">{{ result.gas.overlapDays }} {{ $t('payment_result_card.days_overlap') }}</div>
           </div>
           <div class="payment-amount pa-2">${{ result.gas.payment.toFixed(2) }}</div>
         </div>
@@ -50,7 +50,7 @@
       <v-divider class="my-3 border-opacity-50 border-dashed"></v-divider>
       
       <div class="d-flex justify-end text-h6 font-weight-bold">
-        Total: ${{ result.totalPayment.toFixed(2) }}
+        {{ $t('payment_result_card.total_payment') }}: ${{ result.totalPayment.toFixed(2) }}
       </div>
     </v-card-text>
   </v-card>

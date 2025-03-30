@@ -1,0 +1,57 @@
+{
+    "global": {
+        "days": "days"
+    },
+    "billview": {
+        "titles": {
+            "banner": "Bill Calculator",
+            "bill": "Bills",
+            "roommates": "Roomates",
+            "result": "Payment Results"
+        },
+        "subtitles": {
+            "banner": "A simple tool to calculate shared bills between roommates based on their stay duration",
+            "result_overview": "Summary",
+            "result_details": "Details"
+        },
+        "buttons": {
+            "add_roommate": "Add",
+            "remove_roommate": "Remove",
+            "calculate": "Calculate"
+        },
+        "errors": {
+            "invalid_bills": "Please enter at least one bill amount",
+            "invalid_dates": "Please enter valid dates for Person {id}",
+            "dates_order": "Start date cannot be after end date"
+        }
+    },
+    "billcard": {
+        "titles": {
+            "electric": "Electric Bill",
+            "water": "Water Bill",
+            "gas": "Gas Bill"
+        },
+        "fields_label": {
+            "amount": "Amount ($)",
+            "bill_start": "Billing Start",
+            "bill_end": "Billing End"
+        }
+    },
+    "personcard": {
+        "fields_label": {
+            "start": "Start Date",
+            "end": "End Date"
+        }
+    },
+    "payment_result_card": {
+        "title": "人員 {id}",
+        "occupancy": "Occupancy",
+        "days_overlap": "days overlap",
+        "bill_details": {
+            "electric": "Electric Bill",
+            "water": "Water Bill",
+            "gas": "Gas Bill"
+        },
+        "total_payment": "Total"
+    }
+}
