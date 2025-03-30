@@ -1,11 +1,87 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import BillView from '../views/BillView.vue'
+// import { createRouter, createWebHistory } from 'vue-router'
+// import {
+//   getLocale,
+//   setI18nLanguage,
+//   loadLocaleMessages,
+//   SUPPORT_LOCALES
+// } from '../i18n'
+// import BillView from '../views/BillView.vue'
 
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
+// const router = createRouter({
+//   history: createWebHistory(import.meta.env.BASE_URL),
+//   routes: [
+//     {
+//       path: '/',
+//       name: 'home',
+//       component: BillView,
+//       meta: {
+//         title: 'Bill Calculator - Home',
+//         description: 'Calculate and split your bills easily'
+//       }
+//     },
+//     {
+//       path: '/home2',
+//       name: 'home2',
+//       // route level code-splitting
+//       // this generates a separate chunk (About.[hash].js) for this route
+//       // which is lazy-loaded when the route is visited.
+//       component: () => import('../views/HomeView.vue'),
+//     },
+//     {
+//       path: '/about',
+//       name: 'about',
+//       // route level code-splitting
+//       // this generates a separate chunk (About.[hash].js) for this route
+//       // which is lazy-loaded when the route is visited.
+//       component: () => import('../views/AboutView.vue'),
+//     },
+//   ],
+// })
+
+// // Update document title on route change
+// router.beforeEach((to, from, next) => {
+//   const paramsLocale = to.params.locale
+
+//   console.log('paramsLocale', paramsLocale)
+
+//   // Use default locale if paramsLocale is not in SUPPORT_LOCALES
+//   // if (!SUPPORT_LOCALES.includes(paramsLocale)) {
+//   //   return next(`/${i18n.global.locale.value}`)  // Use current locale value
+//   // }
+
+//   // load locale messages
+//   // if (!i18n.global.availableLocales.includes(paramsLocale)) {
+//   //   await loadLocaleMessages(i18n, paramsLocale)
+//   // }
+
+//   // set i18n language
+//   // setI18nLanguage(i18n, paramsLocale)
+
+//   document.title = to.meta.title as string || 'Bill Calculator'
+//   next()
+// })
+
+// export default router
+
+
+import { createRouter, createWebHistory } from 'vue-router'
+import {
+  getLocale,
+  setI18nLanguage,
+  loadLocaleMessages,
+  SUPPORT_LOCALES
+} from '../i18n'
+import BillView from '../views/BillView.vue'
+import type { RouteRecordRaw } from 'vue-router'
+import type { I18n } from 'vue-i18n'
+
+export function setupRouter(i18n: I18n) {
+  const locale = getLocale(i18n)
+  console.log('locale', locale)
+
+  const routes: RouteRecordRaw[] = [
     {
-      path: '/',
+      path: '/:locale/',
       name: 'home',
       component: BillView,
       meta: {
@@ -14,28 +90,50 @@ const router = createRouter({
       }
     },
     {
-      path: '/home2',
+      path: '/:locale/home2',
       name: 'home2',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/HomeView.vue'),
     },
     {
-      path: '/about',
+      path: '/:locale/about',
       name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue'),
     },
-  ],
-})
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: () => `/${locale}`
+    }
+  ]
 
-// Update document title on route change
-router.beforeEach((to, from, next) => {
-  document.title = to.meta.title as string || 'Bill Calculator'
-  next()
-})
+  const router = createRouter({
+    history: createWebHistory(import.meta.env.BASE_URL),
+    routes
+  })
 
-export default router
+  // Navigation guards
+  router.beforeEach(async (to) => {
+    const paramsLocale = to.params.locale as string
+
+    // Redirect to default locale if paramsLocale is not in SUPPORT_LOCALES
+    if (!SUPPORT_LOCALES.includes(paramsLocale)) {
+      return `/${locale}`
+    }
+
+    // Load locale messages if not already loaded
+    if (!i18n.global.availableLocales.includes(paramsLocale)) {
+      await loadLocaleMessages(i18n, paramsLocale)
+    }
+
+    // Set i18n language
+    setI18nLanguage(i18n, paramsLocale)
+  })
+
+  // Update document title on route change
+  router.afterEach((to) => {
+    if (to.meta.title) {
+      document.title = to.meta.title as string
+    }
+  })
+
+  return router
+}

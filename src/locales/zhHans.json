@@ -1,0 +1,44 @@
+{
+    "global": {
+        "days": "天"
+    },
+    "billview": {
+        "titles": {
+            "banner": "水電瓦斯費計算機",
+            "bill": "帳單",
+            "roommates": "室友",
+            "result": "計算結果"
+        },
+        "subtitles": {
+            "banner": "幫你計算每位室友該付多少水電瓦斯費",
+            "result_overview": "總計",
+            "result_details": "詳細"
+        },
+        "buttons": {
+            "add_roommate": "新增",
+            "remove_roommate": "刪除",
+            "calculate": "計算"
+        }
+    },
+    "billcard": {
+        "titles": {
+            "electric": "電費",
+            "water": "水費",
+            "gas": "瓦斯費"
+        },
+        "fields_label": {
+            "amount": "金額 ($)",
+            "bill_start": "計費開始日",
+            "bill_end": "計費結束日"
+        }
+    },
+    "personcard": {
+        "fields_label": {
+            "start": "開始日",
+            "end": "結束日"
+        }
+    },
+    "payment_result_card": {
+        "language": "語言"
+    }
+}

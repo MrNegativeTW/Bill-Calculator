@@ -18,7 +18,7 @@
               <v-text-field
                 v-bind="props"
                 v-model="formattedStartDate"
-                label="Start Date"
+                :label="$t('personcard.fields_label.start')"
                 hide-details="auto"
                 readonly
                 @click="startDateMenu = true"
@@ -61,7 +61,7 @@
               <v-text-field
                 v-bind="props"
                 v-model="formattedEndDate"
-                label="End Date"
+                :label="$t('personcard.fields_label.end')"
                 hide-details="auto"
                 readonly
                 @click="endDateMenu = true"
@@ -93,7 +93,7 @@
         </v-col>
 
         <v-col cols="12" sm="12" md="3" lg="3">
-          <div class="text-body-1 text-center">{{ localPerson.days }} days</div>
+          <div class="text-body-1 text-center">{{ localPerson.days }} {{ $t('global.days') }}</div>
         </v-col>
       </v-row>
     </v-card-text>

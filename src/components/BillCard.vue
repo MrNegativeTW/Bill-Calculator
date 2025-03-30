@@ -9,7 +9,7 @@
       <v-form>
         <v-text-field
           v-model.number="localBill.amount"
-          :label="'Amount ($)'"
+          :label="$t('billcard.fields_label.amount')"
           type="number"
           min="0"
           step="0.01"
@@ -30,7 +30,7 @@
               <template v-slot:activator="{ props }">
                 <v-text-field
                   v-model="formattedStartDate"
-                  :label="'Billing Start'"
+                  :label="$t('billcard.fields_label.bill_start')"
                   readonly
                   density="comfortable"
                   v-bind="props"
@@ -67,7 +67,7 @@
               <template v-slot:activator="{ props }">
                 <v-text-field
                   v-model="formattedEndDate"
-                  :label="'Billing End'"
+                  :label="$t('billcard.fields_label.bill_end')"
                   readonly
                   density="comfortable"
                   v-bind="props"
@@ -95,7 +95,7 @@
           </v-col>
 
           <v-col cols="12">
-            <div class="text-center mb-1">{{ localBill.days }} days</div>
+            <div class="text-center mb-1">{{ localBill.days }} {{ $t('global.days') }}</div>
           </v-col>
         </v-row>
       </v-form>

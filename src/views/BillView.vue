@@ -3,9 +3,9 @@
   <v-card class="mb-6" color="#f5f7fa" flat width="100%">
     <v-container max-width="900px">
       <div class="py-8">
-        <div class="text-h3 font-weight-bold mb-2">Bill Calculator</div>
+        <div class="text-h3 font-weight-bold mb-2">{{ $t('billview.titles.banner') }}</div>
         <div class="text-subtitle-1 mb-4">
-          A simple tool to calculate shared bills between roommates based on their stay duration.
+          {{ $t('billview.subtitles.banner') }}
         </div>
         <v-btn
           color="primary"
@@ -21,14 +21,14 @@
   </v-card>
 
   <v-container class="mb-4" max-width="900px">
-    <div class="text-h4 my-6 font-weight-bold">Bills</div>
+    <div class="text-h4 my-6 font-weight-bold">{{ $t('billview.titles.bill') }}</div>
 
     <v-card class="mb-6 pa-4 rounded-lg" color="#f5f7fa" flat>
       <v-row>
         <!-- Electric Bill -->
         <v-col cols="12" sm="6" md="4" lg="4">
           <BillCard
-            title="Electric Bill"
+            :title="$t('billcard.titles.electric')"
             :bill="bills.electric"
             @update:bill="updateBill('electric', $event)"
             class-name="electric"
@@ -38,7 +38,7 @@
         <v-col cols="12" sm="6" md="4" lg="4">
           <!-- Water Bill -->
           <BillCard
-            title="Water Bill"
+            :title="$t('billcard.titles.water')"
             :bill="bills.water"
             @update:bill="updateBill('water', $event)"
             class-name="water"
@@ -47,7 +47,7 @@
         <v-col cols="12" sm="6" md="4" lg="4">
           <!-- Gas Bill -->
           <BillCard
-            title="Gas Bill"
+            :title="$t('billcard.titles.gas')"
             :bill="bills.gas"
             @update:bill="updateBill('gas', $event)"
             class-name="gas"
@@ -56,7 +56,7 @@
       </v-row>
     </v-card>
 
-    <div class="text-h4 mt-12 mb-6 font-weight-bold">Roommates</div>
+    <div class="text-h4 mt-12 mb-6 font-weight-bold">{{ $t('billview.titles.roommates') }}</div>
 
     <v-card class="mb-6 pa-4 rounded-lg" color="#f5f7fa" flat>
       <div id="people-container">
@@ -70,7 +70,9 @@
       </div>
       <v-row align="center" justify="center">
         <v-col cols="auto">
-          <v-btn @click="addPerson" color="success" prepend-icon="mdi-plus">Add</v-btn>
+          <v-btn @click="addPerson" color="success" prepend-icon="mdi-plus">{{
+            $t('billview.buttons.add_roommate')
+          }}</v-btn>
         </v-col>
         <v-col cols="auto">
           <v-btn
@@ -79,18 +81,20 @@
             prepend-icon="mdi-minus"
             :disabled="people.length <= 1"
           >
-            Remove
+            {{ $t('billview.buttons.remove_roommate') }}
           </v-btn>
         </v-col>
       </v-row>
     </v-card>
 
-    <v-btn color="primary" size="large" @click="calculatePayment" block>Calculate Payment</v-btn>
+    <v-btn color="primary" size="large" prepend-icon="mdi-calculator " @click="calculatePayment" block>{{
+      $t('billview.buttons.calculate')
+    }}</v-btn>
 
-    <div class="text-h4 mt-12 mb-6 font-weight-bold">Payment Results</div>
+    <div class="text-h4 mt-12 mb-6 font-weight-bold">{{ $t('billview.titles.result') }}</div>
 
     <v-card class="mb-6 pa-4 rounded-lg" color="#f5f7fa" flat>
-      <div class="text-h6 font-weight-bold">Overview</div>
+      <div class="text-h6 font-weight-bold">{{ $t('billview.subtitles.result_overview') }}</div>
 
       <v-data-table
         class="rounded-lg mt-4 elevation-1"
@@ -102,7 +106,9 @@
         hide-default-footer
       ></v-data-table>
 
-      <div class="text-h6 mt-8 mb-4 font-weight-bold">Details</div>
+      <div class="text-h6 mt-8 mb-4 font-weight-bold">
+        {{ $t('billview.subtitles.result_details') }}
+      </div>
 
       <v-row>
         <v-col cols="12" sm="6" md="4" lg="4" v-for="result in results" :key="result.id">
