@@ -79,7 +79,6 @@ import BillView from '../views/BillView.vue'
 
 export function setupRouter(i18n: I18n) {
   const locale = getLocale(i18n)
-  console.log('locale', locale)
 
   const routes: RouteRecordRaw[] = [
     {
