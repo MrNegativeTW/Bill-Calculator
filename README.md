@@ -25,12 +25,12 @@ A simple tool to calculate shared bills between roommates based on their stay du
 
 - Support up to 3 bills (Electricity, Water, Gas)
 - Add unlimited roommates
+- Dark Mode
+- i18n (en, zhHant, zhHans)
 
 **Planning**<br>
 
 - Save data to local storage
-- i18n
-- Dark Mode
 - PWA
 
 ## Installation
