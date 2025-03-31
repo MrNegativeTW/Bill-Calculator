@@ -8,6 +8,7 @@ import { setupRouter } from './router'
 import { setupI18n, SUPPORT_LOCALES } from './i18n'
 import en from './locales/en.json'
 import zhHant from './locales/zhHant.json'
+import zhHans from './locales/zhHans.json'
 
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
@@ -59,8 +60,9 @@ const i18n = setupI18n({
   locale: getUserLanguage(),
   fallbackLocale: 'en',
   messages: {
-    en, // English
-    zhHant // Traditional Chinese
+    en,
+    zhHant, // Traditional Chinese
+    zhHans  // Simplified Chinese
   },
 })
 

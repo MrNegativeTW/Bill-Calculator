@@ -1,6 +1,8 @@
 {
     "global": {
-        "days": "days"
+        "days": "days",
+        "meta_title": "Bill Calculator",
+        "meta_description": "A simple tool to calculate shared bills between roommates based on their stay duration"
     },
     "billview": {
         "titles": {

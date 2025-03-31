@@ -71,9 +71,11 @@ import {
   loadLocaleMessages,
   SUPPORT_LOCALES
 } from '../i18n'
-import BillView from '../views/BillView.vue'
 import type { RouteRecordRaw } from 'vue-router'
+import { updateSeoMetadata } from '../utils/seoHelpers'
 import type { I18n } from 'vue-i18n'
+
+import BillView from '../views/BillView.vue'
 
 export function setupRouter(i18n: I18n) {
   const locale = getLocale(i18n)
@@ -84,10 +86,10 @@ export function setupRouter(i18n: I18n) {
       path: '/:locale/',
       name: 'home',
       component: BillView,
-      meta: {
-        title: 'Bill Calculator - Home',
-        description: 'Calculate and split your bills easily'
-      }
+      // meta: {
+      //   title: 'Bill Calculator - Home',
+      //   description: 'Calculate and split your bills easily'
+      // }
     },
     {
       path: '/:locale/home2',
@@ -130,9 +132,16 @@ export function setupRouter(i18n: I18n) {
 
   // Update document title on route change
   router.afterEach((to) => {
-    if (to.meta.title) {
-      document.title = to.meta.title as string
-    }
+    const paramsLocale = to.params.locale as string
+  
+    // Use route meta data if provided, otherwise use defaults
+    const customMetadata = to.meta.title || to.meta.description ? {
+      title: to.meta.title as string,
+      description: to.meta.description as string
+    } : undefined
+    
+    updateSeoMetadata(i18n, paramsLocale, customMetadata)
+  
   })
 
   return router

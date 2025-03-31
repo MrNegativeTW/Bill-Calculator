@@ -3,7 +3,7 @@ import { createI18n } from 'vue-i18n'
 
 import type { I18n, I18nOptions, Locale } from 'vue-i18n'
 
-export const SUPPORT_LOCALES = ['en', 'zhHant']
+export const SUPPORT_LOCALES = ['en', 'zhHant', 'zhHans']
 
 export function getLocale(i18n: I18n): string {
   if (typeof i18n.global.locale === 'string') {

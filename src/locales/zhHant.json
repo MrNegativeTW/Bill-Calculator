@@ -1,6 +1,8 @@
 {
     "global": {
-        "days": "天"
+        "days": "天",
+        "meta_title": "水電瓦斯計算機",
+        "meta_description": "幫你計算每位室友該付多少水電瓦斯費"
     },
     "billview": {
         "titles": {
