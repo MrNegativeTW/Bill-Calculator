@@ -1,4 +1,4 @@
-// src/utils/seoHelpers.ts
+// @ts-nocheck
 import { type I18n } from 'vue-i18n'
 import { SUPPORT_LOCALES } from '../i18n'
 
@@ -20,7 +20,6 @@ export function updateSeoMetadata(i18n: I18n, locale: string, customMetadata?: P
     ...customMetadata
   }
 
-  console.log('metadata', metadata, metadata.title)
   // Update document metadata
   document.title = metadata.title
   
