@@ -1,13 +1,22 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta http-equiv="refresh" content="0; url=/" />
-    <script>
-      // Redirect to the index.html file
-      window.location.href = "/";
+    <title>Page Not Found - Redirecting...</title>
+    <script type="text/javascript">
+      // Get the current path and search query
+      var path = window.location.pathname;
+      var search = window.location.search;
+      var fullPath = path + search;
+
+      // Store the full path in sessionStorage
+      sessionStorage.setItem('spaRedirectPath', fullPath);
+
+      // Redirect to the root of the site.
+      // The Vue app will pick up the stored path from sessionStorage.
+      window.location.href = '/';
     </script>
   </head>
   <body>
-    <p>If you are not redirected, <a href="/">click here</a> to go to the homepage.</p>
+    <p>If you are not redirected automatically, please <a href="/">click here to go to the homepage</a>.</p>
   </body>
 </html>

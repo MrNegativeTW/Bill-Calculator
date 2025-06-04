@@ -68,6 +68,21 @@ const i18n = setupI18n({
 
 const router = setupRouter(i18n)
 
+// === Start of new code for handling redirect ===
+const savedPath = sessionStorage.getItem('spaRedirectPath')
+if (savedPath) {
+  sessionStorage.removeItem('spaRedirectPath')
+  // Wait for the router to be ready before replacing the path
+  // This ensures all navigation guards and async operations have a chance to complete
+  router.isReady().then(() => {
+    router.replace(savedPath)
+  }).catch(err => {
+    // Log any errors during router.replace, but don't block app mounting
+    console.error('Error during router.replace with savedPath:', err)
+  })
+}
+// === End of new code for handling redirect ===
+
 const app = createApp(App)
 
 app.use(i18n)
